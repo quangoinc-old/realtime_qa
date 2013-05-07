@@ -1,0 +1,48 @@
+<% if params[:id] %>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Edit Issue</h3>
+</div>
+<% else %>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">New Issue</h3>
+</div>
+<% end %>
+<%= form_for @model, remote: :true,format: :json do |f| %>
+  <% if !@model.deliverable_id %>		
+    <%= f.hidden_field :deliverable_id, :value => params[:deliverable_id] %>
+  <% end %>
+  <% if !params[:id] %>
+    <%= f.hidden_field :status, :value => "New" %>
+  <% end %>
+<div class="field">
+  <%= f.label :location %>
+  <%= f.text_field :location %>
+</div>
+<div class="field">
+  <%= f.label :assigned_to_id %>
+  <%= collection_select(:issue,:assigned_to_id, User.where('client = ?',false).order('name asc'), :id, :name, {:prompt => true, :selected => @model.assigned_to_id.to_i}) %>
+</div>
+<div class="field">
+  <%= f.label :description %>
+  <%= f.text_area :description, :rows => "4" %>
+</div>
+<div class="actions">
+  <%= f.submit "Save Issue", :class => "btn btn-primary btn-small", :id => "save_issue"%>
+</div>
+<% end %>
+<script>
+$('body').on('submit','#new_issue',function(){
+  $("#save_issue").attr('disabled','disabled')
+})
+$('body').on('submit','.fedit_issue',function(){
+  $("#save_issue").attr('disabled','disabled')
+})
+$('body').on('ajax:success','#new_issue',function(){
+  $("#remote_modal").modal('hide')
+})
+$('body').on('ajax:success','.edit_issue',function(){
+  $("#remote_modal").modal('hide')
+})
+</script>

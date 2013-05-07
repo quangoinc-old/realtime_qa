@@ -1,0 +1,41 @@
+<% if params[:id] %>
+<%= form_for @model, remote: true, format: :json, :url => "/update_client?id="+@model.id.to_s, :method => "put" do |f| %>
+<h2><%= @model.name %></h2>
+<p>Email : <%= @model.email %> </p>
+<%= f.label :project_ids, "Projects" %>
+<%= f.select :project_ids, Project.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>		
+<div class="clearfix"></div>
+<%= f.submit :class => "btn btn-primary", :style => "margin-top:10px" %>
+<% end %>
+<% else %>
+<%= form_for @model, remote: true, format: :json, :url => "/invite_client", :method => "put" do |f| %>
+
+<%= f.label :name, "Name" %>
+<%= f.text_field :name, :placeholder => "First and Last" %>
+
+<%= f.label :email, "Email" %>
+<%= f.text_field :email %>
+<%= f.hidden_field :client, :value => true %>
+<%= f.label :project_ids, "Projects" %>
+<%= f.select :project_ids, Project.all.collect {|x| [x.name, x.id]}, {}, :multiple => true %>		
+<div class="clearfix"></div>
+<%= f.submit "Invite Client", :class => "btn btn-primary", :style => "margin-top:10px", :id => "save_client" %>
+<% end %>
+<% end %>
+<script>
+$('body').on('ajax:success','.edit_user',function(){
+	$("#remote_modal").modal('hide')
+})
+
+$('select').wl_Multiselect()
+
+$('body').on('ajax:success','#new_user',function(){
+	document.location.reload(true)
+})
+$('body').on('submit','#new_user',function(){
+  $("#save_client").attr('disabled','disabled')
+})
+$('body').on('submit','.edit_user',function(){
+  $("#save_client").attr('disabled','disabled')
+})
+</script>

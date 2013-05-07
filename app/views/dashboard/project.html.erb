@@ -1,0 +1,29 @@
+
+		<%= form_for @model, remote: true, format: :json do |f| %>			
+		<%=  label(:project, :code, "Project Number") %>
+					<div><%= f.text_field :code %></div>
+		<%=  label(:project, :name) %>
+					<div><%= f.text_field :name, :rows => '', :class => "" %></div>
+<div class="clear"></div>
+		<%= f.label :client_ids, "Clients" %>
+		<div><%= f.select :client_ids, User.where('client = ?',true).collect {|x| [x.name, x.id]}, {}, :multiple => true %>		</div>
+<div class="clear"></div><br/>
+		<%= params[:id] ? f.button("Save" ,:class => "btn btn-primary", :id => "project_save") : f.button("Create" ,:class => "btn btn-primary", :id => "project_save")%>
+		<% end %>
+<script type="text/javascript">
+$('body').on('submit','#new_project',function(){
+  $("#project_save").attr('disabled','disabled')
+})
+$('body').on('submit','.edit_project',function(){
+  $("#project_save").attr('disabled','disabled')
+})
+$('body').on('ajax:success','#new_project',function(event,data){
+	$('#remote_modal').modal('hide')
+	document.location.href='/deliverables_list/'+data.id
+	$("#project-list").append('<tr><td>'+data.id+'</td><td><a href="/project/'+data.id+'">'+data.name+'</a></tr>')
+})
+$('body').on('ajax:success','.edit_project',function(){
+	document.location.reload(true)
+})
+$('select').wl_Multiselect()
+</script>

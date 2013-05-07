@@ -1,0 +1,18 @@
+Tue, 07 May 2013 09:42:51 -0700
+doc/README_FOR_APP	Tue, 19 Mar 2013 09:51:38 -0700
+app/controllers/application_controller.rb	Tue, 26 Mar 2013 16:19:36 -0700
+app/controllers/client_project_assignments_controller.rb	Wed, 20 Mar 2013 11:22:27 -0700
+app/controllers/dashboard_controller.rb	Tue, 07 May 2013 09:08:28 -0700
+app/controllers/deliverables_controller.rb	Thu, 11 Apr 2013 14:24:40 -0700
+app/controllers/issue_notes_controller.rb	Tue, 19 Mar 2013 16:15:17 -0700
+app/controllers/issues_controller.rb	Tue, 19 Mar 2013 16:53:27 -0700
+app/controllers/projects_controller.rb	Thu, 28 Mar 2013 12:42:59 -0700
+app/controllers/pusher_controller.rb	Tue, 26 Mar 2013 16:07:51 -0700
+app/helpers/application_helper.rb	Thu, 11 Apr 2013 15:16:28 -0700
+app/helpers/nav_link_helper.rb	Tue, 19 Mar 2013 12:43:51 -0700
+app/models/client_project_assignment.rb	Wed, 20 Mar 2013 11:27:35 -0700
+app/models/deliverable.rb	Thu, 28 Mar 2013 13:32:22 -0700
+app/models/issue.rb	Thu, 28 Mar 2013 13:45:15 -0700
+app/models/issue_note.rb	Thu, 28 Mar 2013 14:33:35 -0700
+app/models/project.rb	Thu, 28 Mar 2013 12:50:09 -0700
+app/models/user.rb	Fri, 12 Apr 2013 09:47:16 -0700

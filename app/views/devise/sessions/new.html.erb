@@ -1,0 +1,19 @@
+
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html =>{:class => "form-signin", :style => "margin-top:50px;"}) do |f| %>
+  <h2 class="form-signin-heading">Quango Assurance</h2>
+  <%= f.email_field :email, :autofocus => true, :class => "input-block-level", :placeholder => "Email Address" %>
+
+  <%= f.password_field :password, :class => "input-block-level", :placeholder => "Password" %>
+
+  <% if devise_mapping.rememberable? -%>
+  	<label class="checkbox">
+			<%= f.check_box :remember_me %> Remember Me
+  	</label>
+  <% end -%>
+
+  <div><%= f.submit "Sign in", :class => "btn btn-primary" %></div>
+<% end %>
+<div class="span4 offset4">
+<%= render "devise/shared/links" %>
+
+</div>

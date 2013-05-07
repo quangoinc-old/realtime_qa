@@ -1,0 +1,29 @@
+<%= form_for(@issue_note) do |f| %>
+  <% if @issue_note.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@issue_note.errors.count, "error") %> prohibited this issue_note from being saved:</h2>
+
+      <ul>
+      <% @issue_note.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :issue_id %><br />
+    <%= f.number_field :issue_id %>
+  </div>
+  <div class="field">
+    <%= f.label :logged_by %><br />
+    <%= f.number_field :logged_by %>
+  </div>
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_field :content %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

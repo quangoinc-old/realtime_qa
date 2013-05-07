@@ -1,0 +1,27 @@
+<h1>Listing issue_notes</h1>
+
+<table>
+  <tr>
+    <th>Issue</th>
+    <th>Logged by</th>
+    <th>Content</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @issue_notes.each do |issue_note| %>
+  <tr>
+    <td><%= issue_note.issue_id %></td>
+    <td><%= issue_note.logged_by %></td>
+    <td><%= issue_note.content %></td>
+    <td><%= link_to 'Show', issue_note %></td>
+    <td><%= link_to 'Edit', edit_issue_note_path(issue_note) %></td>
+    <td><%= link_to 'Destroy', issue_note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Issue note', new_issue_note_path %>

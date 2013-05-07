@@ -1,0 +1,28 @@
+<h1>User Management</h1>
+<table class="table table-condensed table-striped">
+	<thead>
+		<tr>
+			<th>User Id</th>
+			<th>Name</th>
+			<th>Department</th>
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @users.each do |usr| %>
+			<tr>
+				<td><%= usr.id %></td>
+				<td><a data-target="#remote_modal" href="/user?id=<%=usr.id%>" role="button" data-toggle="modal"><%= usr.name %></a></td>
+				<td><% if usr.department %><%= usr.department.titlecase %><% end %></td>
+				<td></td>
+				<td></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+<a data-target="#remote_modal" href="/user" role="button" class="btn btn-primary" data-toggle="modal">New User<i class="icon-plus icon-white"></i></a>
+<div id="remote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+  </div>
+</div>

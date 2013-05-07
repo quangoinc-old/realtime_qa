@@ -1,0 +1,39 @@
+<% if params[:id] %>
+<%= form_for @model, remote: true, format: :json, :url => "/update_user?id="+@model.id.to_s, :method => "put" do |f| %>
+<%= f.label :name, "Name" %>
+<%= f.text_field :name, :placeholder => "First and Last" %>
+<%= f.label :department, "Department" %>
+<%= f.select :department, { "Select Department" => "" ,"Development" => "development" ,"Design" => "design" ,"Copy" => "copy" ,"Client Side" => "client side","System User" => "system", "Interaction" => "interaction" } %>
+<div class="clearfix"></div>
+<%= f.submit :class => "btn btn-primary", :style => "margin-top:10px" %>
+<% end %>
+<% else %>
+<%= form_for @model, remote: true, format: :json, :url => "/invite_user", :method => "post" do |f| %>
+
+<%= f.label :name, "Name" %>
+<%= f.text_field :name, :placeholder => "First and Last" %>
+
+<%= f.label :email, "Email" %>
+<%= f.text_field :email %>
+
+<%= f.label :department, "Department" %>
+<%= f.select :department, { "Select Department" => "" ,"Development" => "development" ,"Design" => "design" ,"Copy" => "copy" ,"Client Side" => "client side","System User" => "system", "Interaction" => "interaction" } %>
+<div class="clearfix"></div>
+<%= f.submit "Invite User", :class => "btn btn-primary", :style => "margin-top:10px", :id => "user_save" %>
+<% end %>
+<% end %>
+<script>
+$('body').on('ajax:success','.edit_user',function(){
+	$("#remote_modal").modal('hide')
+})
+
+$('body').on('ajax:success','#new_user',function(){
+	document.location.reload(true)
+})
+$('body').on('submit','#new_user',function(){
+  $("#user_save").attr('disabled','disabled')
+})
+$('body').on('submit','.edit_user',function(){
+  $("#user_save").attr('disabled','disabled')
+})
+</script>

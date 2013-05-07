@@ -1,0 +1,42 @@
+<% if params[:id] %>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Edit Deliverable</h3>
+</div>
+<% else %>
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">New Deliverable</h3>
+</div>
+<% end %>
+<%= form_for @model, remote: true, format: :json do |f| %>			
+<%= f.hidden_field :project_id, :value => params[:project_id] %>
+<%=  label(:deliverable, :name) %>
+<div><%= f.text_field :name %></div>
+<%=  label(:deliverable, :description) %>
+<div><%= f.text_area :description, :rows => '', :class => "" %></div>
+<%=  label(:deliverable, :location) %>
+<div><%= f.text_field :location, :placeholder => "URL or Server Location" %></div>
+<% if params[:id] %>
+<%=  label(:deliverable, :status) %>
+<div><%= f.select :status, { "Open" => "open", "Closed" => "closed"} %></div>
+<% end %>
+<div class="clear"></div>
+<%= params[:id] ? f.button("Save" ,:class => "btn btn-primary", :id => "deliverable_save") : f.button("Create" ,:class => "btn btn-primary", :id => "deliverable_save")%>
+<% end %>
+<script type="text/javascript">
+$('body').on('ajax:success','#new_deliverable',function(event,data){
+	$('#remote_modal').modal('hide')
+	document.location.href='/qa/'+data.id
+	$("#project-list").append('<tr><td>'+data.id+'</td><td><a href="/project/'+data.id+'">'+data.name+'</a></tr>')
+})
+$('body').on('ajax:success','.edit_deliverable',function(){
+	document.location.reload(true)
+})
+$('body').on('submit','#new_deliverable',function(){
+  $("#deliverable_save").attr('disabled','disabled')
+})
+$('body').on('submit','.edit_deliverable',function(){
+  $("#deliverable_save").attr('disabled','disabled')
+})
+</script>

@@ -1,0 +1,45 @@
+	<p class="lead" style="margin-bottom:0px;">Projects</p>
+	<table class="table table-striped table-condensed" id="project-list">
+		<thead>
+		<tr>
+			<th>ID</th>
+			<th>Project Number</th>
+			<th>Name</th>
+		</tr>
+		</thead>
+		<tbody>
+	<% @project.each do |pro| %>
+
+			<tr>
+				<td><%= pro.id %></td>
+				<td><%= pro.code %></td>
+				<td><a href="/deliverables_list/<%= pro.id %>"><%= pro.name %></a></td>
+	</tr>
+
+	<% end %>
+</tbody>
+		</table>
+		<div class="clearfix"></div>
+	<hr style="margin:0"/>
+	<div id="project_list">
+
+	</div>
+	<a data-target="#remote_modal" href="/project" role="button" data-toggle="modal" class="btn btn-primary">New Project <i class="icon-plus icon-white"></i></a>
+</div>
+
+<div id="remote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">New Project</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>
+<script>
+	$('#project-list').dataTable({
+    "bLengthChange": false,
+    "iDisplayLength": 500,
+    "bPaginate": false,
+    "bInfo": false
+  })
+</script>

@@ -1,0 +1,20 @@
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html =>{:class => "form-signin", :style => "margin-top:50px;"}) do |f| %>
+<h2 class="form-signin-heading">QA Sign Up</h2>
+  <%= devise_error_messages! %>
+
+  <%= f.text_field :name, :autofocus => true, :class => "input-block-level", :placeholder => "Full Name" %>
+
+  <%= f.email_field :email,  :class => "input-block-level", :placeholder => "Email Address" %>
+
+  <%= f.password_field :password, :class => "input-block-level", :placeholder => "Password" %>
+
+  <%= f.password_field :password_confirmation, :class => "input-block-level", :placeholder => "Password Confirm" %>
+  <%= f.hidden_field :client, :value => false %>
+  <%= f.hidden_field :admin, :value => false %>
+
+  <div><%= f.submit "Sign up", :class => "btn btn-primary" %></div>
+<% end %>
+<div class="span4 offset4">
+<%= render "devise/shared/links" %>
+
+</div>

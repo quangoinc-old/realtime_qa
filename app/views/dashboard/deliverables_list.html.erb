@@ -1,0 +1,39 @@
+	<p class="lead" style="margin-bottom:0px;">Deliverables for <%= @project.code %></p>
+	<p>Project ID <%= @project.id %></p>
+	<table class="table table-striped table-condensed" id="project-list">
+		<tr>
+			<th>Deliverable ID</th>
+			<th>Project Number</th>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Open Issues</th>
+			<th>Status</th>
+		</tr>
+<% if !@project.deliverables.blank? %>
+	<% @project.deliverables.each do |del| %>
+
+			<tr>
+				<td><%= del.id %></td>
+				<td><%= del.project.code %></td>
+				<td><a href="/qa/<%= del.id %>"><%= del.name %></a></td>
+				<td><%= del.description %></td>
+				<td><%= del.issues.where('status != ? and status != ?','Confirmed', 'Non-issue').count %>
+				<td><%= del.status.to_s.titlecase %></td>
+	</tr>
+
+	<% end %>
+	<% else %>
+	<tr><td colspan="2">No Projects</td></tr>
+	<% end %>
+		</table>
+	<hr style="margin:0"/>
+	<div id="project_list">
+
+	</div>
+	<a data-target="#remote_modal" href="/deliverable?project_id=<%=@project.id%>" role="button" data-toggle="modal" class="btn btn-primary">New Deliverable <i class="icon-plus icon-white"></i></a>
+</div>
+
+<div id="remote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+  </div>
+</div>

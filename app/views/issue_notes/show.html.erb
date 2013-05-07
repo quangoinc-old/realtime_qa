@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Issue:</b>
+  <%= @issue_note.issue_id %>
+</p>
+
+<p>
+  <b>Logged by:</b>
+  <%= @issue_note.logged_by %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @issue_note.content %>
+</p>
+
+
+<%= link_to 'Edit', edit_issue_note_path(@issue_note) %> |
+<%= link_to 'Back', issue_notes_path %>

@@ -1,0 +1,222 @@
+<div class="row-fluid">
+	<div class="span12">
+		<a href="/deliverables_list/<%= @deliverable.project.id %>"><%= @deliverable.project.code %> <%= @deliverable.project.name %></a>
+		<h1><%= @deliverable.name %></h1>
+		<% if !current_user.client %>
+		<p style="font-size:12px;margin:0px;margin-top:-7px;">
+			<a href="/deliverable/<%=@deliverable.id %>?project_id=<%= @deliverable.project.id%>" data-target="#remote_modal" role="button" data-toggle="modal">Edit Deliverable</a>
+
+		</p>
+
+		<% end %>
+		<div class="row-fluid">
+		<div class="span4">
+			<h6>Deliverable Details</h6>
+			<p>Description: <%= @deliverable.description.gsub(/\n/,'<br/>').html_safe %></p>
+			<p>Location: <%= uri?(@deliverable.location) ? link_to(@deliverable.location, @deliverable.location, :target => "_blank") : @deliverable.location.to_s %> </p>
+		</div>
+		<div class="span4">
+			<h6>Clients</h6>
+			<% clients = [] %>
+			<% @deliverable.project.clients.each do |client| %>
+				<% clients << client.name %>
+			<% end %>
+			<% if !clients.blank? %>
+			<p><%= clients.join(', ') %></p>
+			<% else %>
+				<p>No Clients Assigned</p>
+			<% end %>
+		</div>
+		<% if @bugherd %>
+		<div class="span4">
+			<h6>Bugherd Details</h6>
+			<p><a href="http://www.bugherd.com/projects/<%=@bugherd.id%>" target="_blank">Bugherd Dashboard</a></p>
+			<p>Bugherd Project Key: <%= @bugherd.api_key %>
+		</div>
+		<% end %>
+	</div>
+		<div class="clearfix"></div>
+		<h3>Open Issues <span id="issue_count"><%= @issues.select{|i| i['status'] != 'Confirmed' and i['status'] != 'Non-issue'}.count %></span></h3>
+		<div>
+		<input type="checkbox" id="open_issues" style="margin-top:0px"/><span style="margin-left:10px">Show only open issues</span>
+		</div>
+		<div>
+		<input type="checkbox" id="my_issues" style="margin-top:0px" data-user="<%= current_user.name%>"/><span style="margin-left:10px">Show only issues assigned to me</span>
+		</div>
+		<div class="pull-right">
+			<div id="current-users"></div>
+		</div>
+
+				<a data-target="#remote_modal" href="/issue?deliverable_id=<%=@deliverable.id%>" role="button" class="btn btn-primary" data-toggle="modal" style="margin-bottom:-40px;margin-top:20px">New Issue <i class="icon-plus icon-white"></i></a>
+		<table class="table table-striped table-condensed" id="issue_list">
+			<thead>
+				<tr>
+					<th>Issue ID</th>
+					<th>Status</th>
+					<th>Location</th>
+					<th>Description</th>
+					<th>Logged By</th>
+					<th>Assigned To</th>
+					<th>Notes</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% @issues.each do |issue| %>
+					<tr id='issue-<%=issue.id%>' class="<%= issue.status.downcase.gsub(' ','-') %>">
+						<td><%= issue.local_id %></td>
+						<td>
+							<div class="dropdown status-change">
+							  <a class="dropdown-toggle current-status" data-toggle="dropdown" href="#"><%= issue.status %></a>
+							  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Non-issue</a></li>
+							  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">In Progress</a></li>
+							  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Awaiting Approval</a></li>
+							  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Not Resolved</a></li>
+							  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Confirmed</a></li>
+							  </ul>
+							</div>
+						</td>
+						<td class="issue-location"><%= uri?(issue.location) ? link_to(issue.location, issue.location, :target => "_blank") : issue.location %></td>
+						<td class="issue-description"><%= issue.description %></td>
+						<td><%= issue.logged_by.name %></td>
+						<td class="issue-assigned_to">
+							<div class="dropdown assignment-change">
+							  <a class="dropdown-toggle current-user" data-toggle="dropdown" href="#"><%= issue.assigned_to ? issue.assigned_to.name : "Unassigned"  %></a>
+							  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							  	<% User.where('client = ? and department != ?',false,'system').order('name asc').each do |usr| %>
+								  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;" data-assigned_id="<%= usr.id %>"><%= usr.name %></a></li>
+							  	<% end %>
+							  	<li class="divider"></li>
+							  	<% User.where('client = ? and department = ?',false,'system').order('name asc').each do |usr| %>
+							  		<% if usr.name == "Bug Herd" 
+							  			next 
+							  			end %>
+								  	<li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;" data-assigned_id="<%= usr.id %>"><%= usr.name %></a></li>
+							  	<% end %>
+
+							  </ul>
+							</div>
+						</td>
+						<td>
+								<a data-target="#remote_modal" href="/note?issue_id=<%=issue.id%>" role="button" data-toggle="modal"><i class="icon-comment pull-right"></i></a>
+								<a data-target="#remote_modal" href="/issue/<%=issue.id%>?deliverable_id=<%=@deliverable.id%>" role="button" class="pull-right" data-toggle="modal" style="margin-right:5px;"><i class="icon-pencil"></i></a>
+								<div  class="issue-notes">
+									<% issue.issue_notes.each do |note| %>
+										<p><%= note.content %> <span class="timestamp">[<%= note.logged_by.name %> - <%= note.created_at.to_formatted_s(:short) %>]</span></p>
+									<% end %>
+								</div>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+		<div class="clearfix" style="margin:20px;"></div>
+		<a data-target="#remote_modal" href="/issue?deliverable_id=<%=@deliverable.id%>" role="button" class="btn btn-primary" data-toggle="modal">New Issue <i class="icon-plus icon-white"></i></a>
+	</div>
+	<div class="clearfix" style="margin:30px 0px"></div>
+</div>
+<div id="remote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-body">
+  </div>
+</div>
+<%= javascript_include_tag "qa-page" %>
+<%= content_for :pusher do %>
+<script type="text/javascript">
+ function setAssigner (issueId,userName) {
+	return '<a class="dropdown-toggle current-status" data-toggle="dropdown" href="#">'+userName+'</a> <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"> <% User.where('client = ?',false).order('name asc').each do |usr| %> <li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;" data-assigned_id="<%= usr.id %>"><%= usr.name %></a></li> <% end %> </ul>'
+}
+	// Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log) window.console.log(message);
+  };
+
+  var pusher = new Pusher('6b76e566cb5c3abfb4ae', {
+	  auth: {
+   		headers: {
+	      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+	    }
+	  }
+	});
+	var presence = pusher.subscribe('presence-qa-<%=@deliverable.id%>');
+	var user = <%= current_user.to_json.html_safe %>
+  // Flash fallback logging - don't include this in production
+  WEB_SOCKET_DEBUG = true;
+
+  var channel = pusher.subscribe('deliverable<%=@deliverable.id.to_s%>');
+  channel.bind('issue_update', function(data) {
+  	console.log(data)
+    if($("#issue-"+data.issue.id).length){
+    	var el = $("#issue-"+data.issue.id)
+    	var position = (issueList.fnGetPosition($("#issue-"+data.issue.id)[0]))
+    	data.changes.forEach(function(datum,index){
+    		switch(datum){
+    			case "status":
+    				issueList.fnUpdate('<div class="dropdown status-change"><a class="dropdown-toggle current-status" data-toggle="dropdown" href="#">'+data.issue.status+'</a><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Non-issue</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">In Progress</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Awaiting Approval</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Not Resolved</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Confirmed</a></li></ul></div>',position,1);
+    				el.attr('class',data.issue.status.toLowerCase().replace(' ','-'));
+    				issueList.fnDraw();
+    				$("#issue_count").text($('tbody tr').length - ($('.confirmed').length + $('.non-issue').length));
+    				break;
+    			case "description":
+    				issueList.fnUpdate(data.issue.description,position,3);
+    				issueList.fnDraw();
+    				break;
+    			case "location":
+    				issueList.fnUpdate(data.issue.location,position,2);
+    				issueList.fnDraw();
+    				break;
+    			case "assigned_to_id":
+    				el.find('.current-user').text(data.assigned_to.name);
+    				issueList.fnDraw();
+    				break;
+    		}
+    	});
+    } 
+    else {
+    	if(data.assigned_to == null){
+    		var name = "Unassigned"
+    	}
+    	else {
+    		var name = data.assigned_to.name
+    	}
+    	var row = issueList.fnAddData([
+    			data.issue.local_id,
+    			'<div class="dropdown status-change"><a class="dropdown-toggle current-status" data-toggle="dropdown" href="#">'+data.issue.status+'</a><ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Non-issue</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">In Progress</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Awaiting Approval</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Not Resolved</a></li><li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;">Confirmed</a></li></ul></div>',
+    			data.issue.location,
+    			data.issue.description,
+    			data.logged_by.name,
+    			'<div class="dropdown assignment-change"> <a class="dropdown-toggle current-user" data-toggle="dropdown" href="#">'+name+'</a> 							  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel"> <% User.where('client = ? and department != ?',false,'system').order('name asc').each do |usr| %> <li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;" data-assigned_id="<%= usr.id %>"><%= usr.name %></a></li> <% end %> <li class="divider"></li> <% User.where('client = ? and department = ?',false,'system').order('name asc').each do |usr| %> <% if usr.name == "Bug Herd" %> <% next %> <% end %> <li role="presentation" class="clickme"><a role="menuitem" tabindex="-1" style="cursor:pointer;" data-assigned_id="<%= usr.id %>"><%= usr.name %></a></li> <% end %> </ul> </div>', 
+    			'<a data-target="#remote_modal" href="/note?issue_id='+data.issue.id+'" role="button" data-toggle="modal"><i class="icon-comment pull-right"></i></a> <a data-target="#remote_modal" href="/issue/'+data.issue.id+'?project_id='+data.issue.project_id+'" role="button" class="pull-right" data-toggle="modal" style="margin-right:5px;"><i class="icon-pencil"></i></a> <div  class="issue-notes"> </div>'
+    		]);
+			var theNode = issueList.fnSettings().aoData[row].nTr;
+			$(theNode).addClass('new')
+			$(theNode).attr('id','issue-'+data.issue.id)
+    	$("#issue_count").text($('tbody tr').length - ($('.confirmed').length + $('.non-issue').length));
+    }
+  });
+  channel.bind('note_update', function(data) {
+  	date = new Date(Date.parse(data.note.created_at))
+  	$("#issue-"+data.issue).find('.issue-notes').append('<p class="new note">'+data.note.content+' <span class="timestamp">['+data.logged_by.name+' - '+date.getDate() + " " +month[date.getMonth()]+" " +date.getHours()+":"+date.getMinutes()+']</span></p>')
+  	console.log("Note Update -------")
+		console.log(data)
+  });
+  presence.bind('pusher_internal:member_removed',function(data){
+  	console.log('User Out')
+  	console.log(data)
+  	$('#user-'+data.user_id).remove()
+  });
+  presence.bind('pusher_internal:member_added',function(data){
+  	console.log("User Id")
+  	console.log(data.user_id)
+  	$("#current-users").append("<div class='user pull-right' id='user-"+data.user_id+"'><img src='"+data.user_info.gravatar+"' title='"+data.user_info.name+"'/></div>")
+  	$('#user-'+data.user_id + ' img').tooltip({placement:"top",trigger:"hover"})
+  });
+  presence.bind('pusher:subscription_succeeded',function(data){
+  	presence.members.each(function(member) {
+  	  var userId = member.id;
+  	  var userInfo = member.info;
+	  	$("#current-users").append("<div class='user pull-right' id='user-"+userId+"'><img src='"+userInfo.gravatar+"' title='"+userInfo.name+"'/></div>")
+  	$('.user img').tooltip({placement:"top",trigger:"hover"})
+  	});
+  });
+</script>
+	<% end %>

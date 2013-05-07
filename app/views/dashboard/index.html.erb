@@ -1,0 +1,105 @@
+<div class="row-fluid">
+	<div class="span9 well well-small">
+		<p class="lead" style="margin-bottom:0px;">Open Issues Assigned to Me</p>
+		<hr style="margin:0"/>
+		<div id="my_issues">
+			<table class="table table-striped">
+				<tr>
+					<th>Issue ID</th>
+					<th>Project</th>
+					<th>Location</th>
+					<th>Issue</th>
+					<th>Status</th>
+					<th>Logged By</th>
+				</tr>
+<% if !@my_issues.blank? %>
+			<% @my_issues.each do |issue| %>
+				<% if !issue.deliverable.blank? %>
+					<tr>
+						<td><%= issue.id %></td>
+						<td><a href="/qa/<%= issue.deliverable_id %>"><%= issue.deliverable.name %></a></td>
+						<td><%= issue.location %></td>
+						<td><%= issue.description %></td>
+						<td><%= issue.status %></td>
+						<td><%= issue.logged_by.name %></td>		
+					</tr>
+				<% end %>
+			<% end %>
+			<% else %>
+				<tr>
+					<td colspan="6">No Issues</td>
+				</tr>
+			<% end %>
+			</table>
+		</div>
+		<p class="lead" style="margin-bottom:0px;">Open Issues Assigned to My Department</p>
+		<hr style="margin:0"/>
+		<div id="my_issues">
+			<table class="table table-striped">
+				<tr>
+					<th>Issue ID</th>
+					<th>Project</th>
+					<th>Location</th>
+					<th>Issue</th>
+					<th>Status</th>
+					<th>Logged By</th>
+				</tr>
+<% if !@dep_issues.blank? %>
+			<% @dep_issues.each do |issue| %>
+				<% if !issue.deliverable.blank? %>
+					<tr>
+						<td><%= issue.id %></td>
+						<td><a href="/qa/<%= issue.deliverable_id %>"><%= issue.deliverable.name %></a></td>
+						<td><%= issue.location %></td>
+						<td><%= issue.description %></td>
+						<td><%= issue.status %></td>
+						<td><%= issue.logged_by.name %></td>		
+					</tr>
+				<% end %>
+			<% end %>
+			<% else %>
+				<tr>
+					<td colspan="6">No Issues</td>
+				</tr>
+			<% end %>
+			</table>
+		</div>
+	</div>
+
+	<div class="span3 well well-small">
+		<p class="lead" style="margin-bottom:0px;">Open Deliverables</p>
+		<table class="table table-striped" id="project-list">
+			<thead>
+			<tr>
+				<th>Project<br/>Number</th>
+				<th>Name</th>
+				<th>Awaiting<br/>Approval</th>
+			</tr>
+			</thead>
+			<tbody>
+		<% @deliverables.each do |dev| %>
+
+				<tr>
+					<td><%= dev.project ? dev.project.code : ""  %></td>
+					<td><a href="/qa/<%= dev.id %>"><%= dev.name %></a></td>
+					<td><%= dev.issues.where('status = ?','Awaiting Approval').count %></td>
+		</tr>
+
+		<% end %>
+	</tbody>
+			</table>
+		<hr style="margin:0"/>
+		<a data-target="#remote_modal" href="/project" role="button" data-toggle="modal" class="btn btn-primary">New Project <i class="icon-plus icon-white"></i></a>	
+	</div>
+
+</div>
+ 
+<!-- Modal -->
+<div id="remote_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">New Project</h3>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>

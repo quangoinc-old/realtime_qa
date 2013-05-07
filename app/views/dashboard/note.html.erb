@@ -1,0 +1,24 @@
+
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Add Note</h3>
+</div>
+<br/>
+<%= form_for @model, remote: :true,format: :json do |f| %>		
+  <%= f.hidden_field :issue_id, :value => params[:issue_id] %>
+<div class="field">
+  <%= f.label :content %><br />
+  <%= f.text_area :content, :rows => "4" %>
+</div>
+<div class="actions">
+  <%= f.submit "Save Note", :class => "btn btn-primary btn-small", :id => "new_note" %>
+</div>
+<% end %>
+<script>
+$('body').on('submit','#new_issue_note',function(){
+  $("#new_note").attr('disabled','disabled')
+})
+$('body').on('ajax:success','#new_issue_note',function(){
+	$("#remote_modal").modal('hide')
+})
+</script>

@@ -1,0 +1,25 @@
+# This file is an example of the environment variables that this tool uses.
+
+######################################
+#	The PUSHER API key allows you to do realtime updates with the tool
+#		Pusher has a free plan you can get here
+#			https://app.pusherapp.com/accounts/sign_up
+PUSHER_KEY: '1234567890key'
+PUSHER_API: '100281'
+PUSHER_SECRET: 'secretpushercode'
+
+######################################
+#	The Bugherd API allows you to track bugs visually
+#		You can sign up for a Bugherd account here
+#			-http://www.bugherd.com/users/sign_up
+BUGHERD_LOGIN: "yourbugherdlogin@email.com"
+BUGHERD_PASSWORD: "bugherd_password"
+
+######################################
+#	The tool currently uses Gmail SMTP for ease of use
+# Sendmail can easily replace Gmail
+# Gmail SMTP Config
+MAIL_HOST: "applicationlocation.com"
+MAIL_DOMAIN: "yourdomain.com"
+MAIL_USER: "youremail@example.com"
+MAIL_PW: "password123"

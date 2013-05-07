@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Account Settings</h3>
+</div>
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+  <%= devise_error_messages! %>
+
+  <%= f.text_field :name, :autofocus => true, :class => "input-block-level", :placeholder => "Full Name", :disabled => "disabled" %>
+  <%= f.password_field :current_password, :class => "input-block-level", :placeholder => "Current Password" %>
+
+  <%= f.password_field :password, :class => "input-block-level", :placeholder => "New Password" %>
+
+  <%= f.password_field :password_confirmation, :class => "input-block-level", :placeholder => "New Password Confirm" %>
+
+
+ <%= f.submit "Update", :class => "btn btn-primary"  %>
+<% end %>
+<script>
+$('body').on('ajax:success','.edit_user',function(){
+  $("#remote_modal").modal('hide')
+})
+</script>
