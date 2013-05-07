@@ -4,12 +4,12 @@ This tool was developed to provide our agency with a realtime QA tool. It curren
 
 ## Road Map
 
-	- Remove Bugherd Dependency
-	- Remove Pusher Depedency
-	- Build Visual QA into the Tool
-	- Upload Assets for QA
-	- Email Notifications for Open Issues
+- Remove Bugherd Dependency
+- Remove Pusher Depedency
+- Build Visual QA into the Tool
+- Upload Assets for QA
+- Email Notifications for Open Issues
 
-	## License
+## License
 
-	Ruby on Rails is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+The Realtime QA Tool is released under the [MIT License](http://www.opensource.org/licenses/MIT).
