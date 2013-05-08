@@ -32,6 +32,5 @@ capybara-*.html
 rerun.txt
 pickle-email-*.html
 .project
-Gemfile.lock
 config/config.yml
 config/database.yml
