@@ -38,7 +38,7 @@
 		<div class="clearfix"></div>
 		<h3>Open Issues <span id="issue_count"><%= @issues.select{|i| i['status'] != 'Confirmed' and i['status'] != 'Non-issue'}.count %></span></h3>
 		<div>
-		<input type="checkbox" id="open_issues" style="margin-top:0px"/><span style="margin-left:10px">Show only open issues</span>
+		<input type="checkbox" checked="checked" id="open_issues" style="margin-top:0px"/><span style="margin-left:10px">Show only open issues</span>
 		</div>
 		<div>
 		<input type="checkbox" id="my_issues" style="margin-top:0px" data-user="<%= current_user.name%>"/><span style="margin-left:10px">Show only issues assigned to me</span>
@@ -62,7 +62,7 @@
 			</thead>
 			<tbody>
 				<% @issues.each do |issue| %>
-					<tr id='issue-<%=issue.id%>' class="<%= issue.status.downcase.gsub(' ','-') %>">
+					<tr id='issue-<%=issue.id%>' class="<%= issue.status == "Confirmed" || issue.status == "Non-Issue" ? " status-hide " : "" %><%= issue.status.downcase.gsub(' ','-') %>">
 						<td><%= issue.local_id %></td>
 						<td>
 							<div class="dropdown status-change">
