@@ -14,4 +14,11 @@ class Issue < ActiveRecord::Base
     count = Issue.where('deliverable_id = ?',self.deliverable).size
     self.local_id = count+1
   end
+  def open?
+    if self.status == "Non-issue" || self.status == "Confirmed" || self.status.nil?
+      return false
+    else
+      return true
+    end
+  end
 end

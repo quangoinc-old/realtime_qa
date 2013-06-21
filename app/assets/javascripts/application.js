@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery-ui
+//= require vendor/jquery-ui
 //= require bootstrap/bootstrap
 //= require vendor/multiselect
 //= require vendor/datatables
