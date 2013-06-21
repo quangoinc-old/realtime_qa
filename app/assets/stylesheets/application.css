@@ -46,6 +46,15 @@
  .dropdown-submenu:focus > a > [class*=" icon-"] {
    background-image: url("/assets/glyphicons-halflings-white.png") !important;
  }
+
+.table th, .table td {
+   word-break: break-all;
+   word-break: break-word;
+ }
+
+  #my_issues .table th, #my_issues .table td {
+   min-width:70px;
+ }
  .timestamp {
    font-size:9px;
    color:#777;
