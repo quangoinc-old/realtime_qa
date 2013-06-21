@@ -52,7 +52,7 @@
    word-break: break-word;
  }
 
-  #project-list th, #project-list td, #my_issues .table th, #my_issues .table td {
+  #issue_list_wrapper th, #issue_list_wrapper td,#project-list th, #project-list td, #my_issues .table th, #my_issues .table td {
    min-width:70px;
  }
  .timestamp {
