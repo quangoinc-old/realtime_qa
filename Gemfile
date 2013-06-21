@@ -8,8 +8,7 @@ gem 'rails', '3.2.12'
 
 gem 'awesome_print', :group => :development
 
-gem 'sqlite3', :group => :development
-gem 'pg', :group => :production
+gem 'pg'
 
 
 # Gems used only for assets and not required

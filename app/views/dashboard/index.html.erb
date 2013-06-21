@@ -73,16 +73,16 @@
 			<tr>
 				<th>Project<br/>Number</th>
 				<th>Name</th>
-				<th>Awaiting<br/>Approval</th>
+				<th>Open<br/>Issues</th>
 			</tr>
 			</thead>
 			<tbody>
-		<% @deliverables.each do |dev| %>
+		<% @open.each do |dev| %>
 
 				<tr>
 					<td><%= dev.project ? dev.project.code : ""  %></td>
 					<td><a href="/qa/<%= dev.id %>"><%= dev.name %></a></td>
-					<td><%= dev.issues.where('status = ?','Awaiting Approval').count %></td>
+					<td><%= dev.issues.select{|i| i['status'] != 'Confirmed' and i['status'] != 'Non-issue'}.count %></td>
 		</tr>
 
 		<% end %>
