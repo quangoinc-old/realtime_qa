@@ -62,7 +62,7 @@
 			</thead>
 			<tbody>
 				<% @issues.each do |issue| %>
-					<tr id='issue-<%=issue.id%>' class="<%= issue.status == "Confirmed" || issue.status == "Non-Issue" ? " status-hide " : "" %><%= issue.status.downcase.gsub(' ','-') %>">
+					<tr id='issue-<%=issue.id%>' class="<%= issue.status == "Confirmed" || issue.status == "Non-issue" ? " status-hide " : "" %><%= issue.status.downcase.gsub(' ','-') %>">
 						<td><%= issue.local_id %></td>
 						<td>
 							<div class="dropdown status-change">
