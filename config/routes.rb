@@ -38,6 +38,7 @@ QuangoAssurance::Application.routes.draw do
     get :user, :on => :collection
     post :invite_user, :on => :collection
     put :update_user, :on => :collection
+    get :feed, :on => :collection
   end
 
   root :to => 'Dashboard#index'
@@ -46,6 +47,7 @@ QuangoAssurance::Application.routes.draw do
   match '/issue/:id' => "Dashboard#issue"
   match '/qa/:id' => "Dashboard#qa"
   match '/deliverables_list/:id' => "Dashboard#deliverables_list"
+  get '/feed/:id' => "Dashboard#feed"
   match '/pusher/auth' => "Dashboard#get_user"
   # The priority is based upon order of creation:
   # first created -> highest priority.
