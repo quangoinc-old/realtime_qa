@@ -59,6 +59,7 @@
 							<%= nav_link 'User Management', '/user_management',{}, {:selected_class => 'active', :wrapper => 'li'} %>
 						<% end %>
 							<li><a href="http://www.bugherd.com/users/sign_in" target="_blank">Bugherd Login</a></li>
+							<li><a href="/feed/<%= current_user.id %>.atom">My Issues RSS Feed</a></li>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
