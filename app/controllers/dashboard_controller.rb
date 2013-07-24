@@ -12,7 +12,7 @@ class DashboardController < ApplicationController
 		end
 	end
 	def index
-		@deliverables = Deliverable.where('status = ?','open')
+		@deliverables = Deliverable.all
 		@open = []
 		@deliverables.each do |d|
 			oi = false
