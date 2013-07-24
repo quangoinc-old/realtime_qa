@@ -224,7 +224,6 @@ class DashboardController < ApplicationController
 				@open << d
 			end
 		end
-		@issues = Issue.where('created_date is between ? and ?',(Date.today - 5.days),(Date.today + 5.days))
 		@my_issues = Issue.where('assigned_to_id = ? and status != ? and status !=?',@user.id,'Confirmed','Non-issue')
 		@dep_issues = Issue.where('assigned_to_id = ? and status !=? and status !=?',User.where('name = ?',@user.department.titlecase).first.id,'Confirmed','Non-issue')
 	end
