@@ -38,7 +38,6 @@ QuangoAssurance::Application.routes.draw do
     get :user, :on => :collection
     post :invite_user, :on => :collection
     put :update_user, :on => :collection
-    get :feed, :on => :collection
   end
 
   root :to => 'Dashboard#index'
