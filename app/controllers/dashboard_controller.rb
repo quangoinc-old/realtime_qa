@@ -211,19 +211,6 @@ class DashboardController < ApplicationController
 	end
 	def feed
 		@user = User.find(params[:id])
-		@deliverables = Deliverable.where('status = ?','open')
-		@open = []
-		@deliverables.each do |d|
-			oi = false
-			oi = d.issues.each do |i|
-				if i.open?
-					break true
-				end			
-			end
-			if oi == true
-				@open << d
-			end
-		end
 		@my_issues = Issue.where('assigned_to_id = ? and status != ? and status !=?',@user.id,'Confirmed','Non-issue')
 		@dep_issues = Issue.where('assigned_to_id = ? and status !=? and status !=?',User.where('name = ?',@user.department.titlecase).first.id,'Confirmed','Non-issue')
 	end
