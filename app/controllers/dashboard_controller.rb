@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
-	before_filter :authenticate_user!, :except => [:get_user]
-	before_filter :client_check, :except => [:project_list, :qa, :get_user]
+	before_filter :authenticate_user!, :except => [:get_user, :feed]
+	before_filter :client_check, :except => [:project_list, :qa, :get_user, :feed]
 	BugherdAPI.authenticate ENV["BUGHERD_LOGIN"], ENV["BUGHERD_PASSWORD"]
 	include ApplicationHelper
 	def show
