@@ -13,3 +13,7 @@ This tool was developed to provide our agency with a realtime QA tool. It curren
 ## License
 
 The Realtime QA Tool is released under the [MIT License](http://www.opensource.org/licenses/MIT).
+
+### Code Climate
+[![Code Climate](https://codeclimate.com/github/quangoinc/realtime_qa.png)](https://codeclimate.com/github/quangoinc/realtime_qa)
+Adding Code Climate so we can go back through and clean up our code.
