@@ -17,3 +17,7 @@ The Realtime QA Tool is released under the [MIT License](http://www.opensource.o
 ### Code Climate
 [![Code Climate](https://codeclimate.com/github/quangoinc/realtime_qa.png)](https://codeclimate.com/github/quangoinc/realtime_qa)
 Adding Code Climate so we can go back through and clean up our code.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/quangoinc/realtime_qa/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
