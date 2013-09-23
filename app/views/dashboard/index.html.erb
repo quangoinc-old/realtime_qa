@@ -21,7 +21,7 @@
 						<td><%= issue.location %></td>
 						<td><%= issue.description %></td>
 						<td><%= issue.status %></td>
-						<td><%= issue.logged_by.name unless issue.logged_by.name.nil?  %></td>		
+						<td><%= issue.logged_by.name unless issue.logged_by.nil?  %></td>		
 					</tr>
 				<% end %>
 			<% end %>
