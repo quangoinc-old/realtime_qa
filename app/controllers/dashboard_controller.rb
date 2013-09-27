@@ -1,7 +1,6 @@
 class DashboardController < ApplicationController
 	before_filter :authenticate_user!, :except => [:get_user, :feed]
 	before_filter :client_check, :except => [:project_list, :qa, :get_user, :feed]
-	BugherdAPI.authenticate ENV["BUGHERD_LOGIN"], ENV["BUGHERD_PASSWORD"]
 	include ApplicationHelper
 	def show
 
@@ -113,37 +112,7 @@ class DashboardController < ApplicationController
 	def qa
 		if params[:id]
 				@deliverable = Deliverable.find(params[:id])
-			if @deliverable.bugherd_id.blank?
-				project = BugherdAPI::Project.create(:name => @deliverable.name, :devurl => @deliverable.location)
-				project.is_public = true
-				project.save
-				@deliverable.bugherd_id = project.id
-				@deliverable.save
-			end
-				@bugherd = BugherdAPI::Project.find(@deliverable.bugherd_id)
-				@bugherd_issues = BugherdAPI::Task.all(:params => {:project_id => @deliverable.bugherd_id}).sort_by &:local_task_id
 				@users = User.scoped
-				@bugherd_issues.each do |bi|
-					if bi.status_id == 0 || bi.status_id == nil
-						issue = Issue.new
-						issue.deliverable_id = params[:id]
-						logger = @users.where('email = ?',bi.requester_email)
-						if logger.blank?
-							issue.logged_by_id = 5
-						else
-							issue.logged_by_id = logger.first.id
-						end
-						issue.description = bi.description
-						issue.location = bi.site + bi.url
-						issue.status = 'New'
-						issue.bugherd_id = bi.id
-						issue.save
-						bi.status_id = 1
-						bi.save
-					else
-						next
-					end
-			end
 				@issues = Issue.where('deliverable_id = ?',@deliverable.id)
 		else
 			redirect_to :action => 'project_list'
@@ -177,16 +146,6 @@ class DashboardController < ApplicationController
 		@note.issue = @issue
 		@note.save
 		@issue.save
-		if @issue.bugherd_id && params[:status] == 'Confirmed'
-			task = BugherdAPI::Task.find(@issue.bugherd_id, :params => {:project_id => @issue.deliverable.bugherd_id})
-			task.status_id = 5
-			task.save
-		end
-		if @issue.bugherd_id && params[:status] == 'Non-issue'
-			task = BugherdAPI::Task.find(@issue.bugherd_id, :params => {:project_id => @issue.deliverable.bugherd_id})
-			task.status_id = 5
-			task.save
-		end
 		render :json => @issue
 	end
 	def get_user
