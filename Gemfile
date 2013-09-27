@@ -48,9 +48,6 @@ gem 'devise_invitable', '~> 1.1.0'
 # Pusher for realtime updates
 gem 'pusher'
 
-# Include Bugherd API Gem
-gem 'bugherd-api'
-
 gem 'quiet_assets'
 
 # Ping-scheduler to keep site active
